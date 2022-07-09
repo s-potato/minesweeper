@@ -1,5 +1,15 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.2/css/bulma.min.css');
+@import url(https://use.fontawesome.com/releases/v6.1.1/css/all.css);
+
 .App {
-  text-align: center;
+  height: 100vh;
+}
+
+html {
+  background-color: #61dafb;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .App-logo {

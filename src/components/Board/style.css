@@ -1,0 +1,71 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    color: white
+}
+
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    opacity: 0.8;
+    border: 3px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    color: cyan;
+    font-weight: 1000
+}
+
+.cell-unreveal {
+    box-shadow: 10px;
+}
+
+.cell-unreveal:hover {
+    background-color: cyan;
+}
+
+.cell-mines {
+    background-color: yellow;
+}
+
+.cell-reveal {
+    cursor: default;
+    background-color: aliceblue;
+}
+
+.cell-reveal-1 {
+    color: royalblue
+}
+
+.cell-reveal-2 {
+    color: green
+}
+
+.cell-reveal-3 {
+    color: red
+}
+
+.cell-reveal-4 {
+    color: darkblue
+}
+
+.cell-reveal-5 {
+    color: darkred
+}
+
+.cell-reveal-6 {
+    color: teal
+}
+
+.cell-reveal-7 {
+    color: brown
+}
+
+.cell-reveal-8 {
+    color: red
+}
