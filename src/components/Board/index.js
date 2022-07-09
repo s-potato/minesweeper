@@ -15,6 +15,7 @@ function Board(props) {
     const freshBoard = () => {
         setNotify("")
         const newBoard = EmptyBoard(props.height, props.width)
+        setMineCount(props.mines)
         setNonMineCount(props.height * props.width - props.mines)
         setGrid(newBoard.board)
         setEngame(false)

@@ -1,4 +1,5 @@
 import Board from "../Board";
+import Header from "../Header";
 import "./style.css"
 
 function Game() {
@@ -8,9 +9,12 @@ function Game() {
 
     return (
         <div>
-            <h1>Minesweeper</h1>
-            <div className="board">
-                <Board height={height} width={width} mines={mines} />
+            <Header activeLink={"game"}></Header>
+            <div>
+                <h1>Minesweeper</h1>
+                <div className="board">
+                    <Board height={height} width={width} mines={mines} />
+                </div>
             </div>
         </div>
     );
