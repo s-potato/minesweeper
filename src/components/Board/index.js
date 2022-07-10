@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CreateBoard, EmptyBoard } from "../../utils/CreateBoard";
+import { addHistory, getStatistic, setStatistic } from "../../utils/firebase/game";
 import reveal from "../../utils/Reveal";
 import Cell from "./Cell";
 import "./style.css"
@@ -11,13 +12,56 @@ function Board(props) {
     const [mineLocation, setMineLocation] = useState([]);
     const [mineCount, setMineCount] = useState(props.mines)
     const [notify, setNotify] = useState("")
+    const [startTime, setStartTime] = useState(null)
     const [timer, setTimer] = useState(0)
     const [timeCounting, setTimeCounting] = useState(null)
 
     const timeCounter = () => {
-        return setInterval(()=>{
-            setTimer(timer => timer+1)
+        return setInterval(() => {
+            setTimer(timer => timer + 1)
         }, 1000)
+    }
+
+    const handleEndGame = (result, timer) => {
+        let user = JSON.parse(localStorage.getItem("user"))
+        let game = {
+            uid: user.uid,
+            level: props.level,
+            result: result,
+            startTime: startTime,
+            time: timer
+        }
+        getStatistic(user.uid, props.level).then(data => {
+            if (!data) {
+                let stat = {
+                    uid: user.uid,
+                    name: user.username,
+                    level: props.level,
+                    totalGames: 1,
+                    totalWin: result === 'win' ? 1 : 0,
+                    totalTime: result === 'win' ? timer : 0
+                }
+                if (result === 'win') {
+                    stat.bestResult = timer
+                }
+                setStatistic(stat)
+            } else {
+                let stat = data
+                stat.totalGames += 1
+                if (result === 'win') {
+                    stat.totalWin += 1
+                    stat.totalTime += timer
+                    if (!stat.bestResult) {
+                        stat.bestResult = timer
+                    } else if (stat.bestResult > timer) {
+                        stat.bestResult = timer
+                    }
+                }
+                console.log(stat)
+                setStatistic(stat)
+            }
+        })
+        addHistory(game)
     }
 
     const freshBoard = () => {
@@ -37,15 +81,11 @@ function Board(props) {
         setMineLocation(newBoard.mineLocation)
         let newGrid = JSON.parse(JSON.stringify(newBoard.board));
         let revealedBoard = reveal(newGrid, x, y, nonMineCount);
+        setStartTime(Date.now())
         setTimeCounting(timeCounter());
         setGrid(revealedBoard.board);
         setNonMineCount(revealedBoard.nonMineCount)
     }
-
-    useEffect(()=>{
-        console.log(timer)
-        console.log(timeCounting)
-    },[timer, timeCounting])
 
     useEffect(() => {
         freshBoard();
@@ -78,6 +118,7 @@ function Board(props) {
             let newGrid = JSON.parse(JSON.stringify(grid));
             if (newGrid[x][y].value === -1) {
                 setNotify("You lose!")
+                handleEndGame("lose", timer)
                 setEndgame(true)
                 for (let i = 0; i < mineLocation.length; i++) {
                     newGrid[mineLocation[i][0]][mineLocation[i][1]].revealed = true;
@@ -91,6 +132,7 @@ function Board(props) {
                 setNonMineCount(revealedBoard.nonMineCount);
                 if (revealedBoard.nonMineCount === 0) {
                     setNotify("You win!")
+                    handleEndGame("win", timer)
                     setEndgame(true)
                     clearInterval(timeCounting)
                     setTimeout(freshBoard, 5000);

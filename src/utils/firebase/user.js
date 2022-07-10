@@ -12,7 +12,7 @@ export const getUser = async (uid) => {
         }
     } catch (err) {
         console.log(err)
-        return err
+        return undefined
     }
 }
 
