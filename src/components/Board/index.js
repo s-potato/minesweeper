@@ -25,16 +25,17 @@ function Board(props) {
     const handleEndGame = (result, timer) => {
         let user = JSON.parse(localStorage.getItem("user"))
         let game = {
-            uid: user.uid,
+            uid: user.id,
             level: props.level,
             result: result,
             startTime: startTime,
             time: timer
         }
-        getStatistic(user.uid, props.level).then(data => {
+        console.log(game)
+        getStatistic(user.id, props.level).then(data => {
             if (!data) {
                 let stat = {
-                    uid: user.uid,
+                    uid: user.id,
                     name: user.username,
                     level: props.level,
                     totalGames: 1,

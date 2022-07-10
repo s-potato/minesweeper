@@ -25,10 +25,10 @@ function Header({activeLink}) {
                 <a className={activeLink === "game" ? "navbar-item is-active" : "navbar-item"} href="/">
                     Play
                 </a>
-                <a className={activeLink === "history" ? "navbar-item is-active" : "navbar-item"} href="/">
+                <a className={activeLink === "history" ? "navbar-item is-active" : "navbar-item"} href="/history">
                     History
                 </a>
-                <a className={activeLink === "ranking" ? "navbar-item is-active" : "navbar-item"} href="/">
+                <a className={activeLink === "ranking" ? "navbar-item is-active" : "navbar-item"} href="/ranking">
                     Ranking
                 </a>
             </div>
@@ -38,7 +38,7 @@ function Header({activeLink}) {
                     <span className="navbar-link">{user.username}
                     </span>
                     <div className="navbar-dropdown is-right">
-                        <a href="/" className="navbar-item">
+                        <a href="/statistic" className="navbar-item">
                             Statistics
                         </a>
                         <a href="/" className="navbar-item" onClick={e => localStorage.removeItem("user")}>
