@@ -6,19 +6,29 @@ import "./style.css"
 
 function Board(props) {
     const [grid, setGrid] = useState([])
-    const [isEngame, setEngame] = useState(true)
+    const [isEndgame, setEndgame] = useState(true)
     const [nonMineCount, setNonMineCount] = useState(0);
     const [mineLocation, setMineLocation] = useState([]);
     const [mineCount, setMineCount] = useState(props.mines)
     const [notify, setNotify] = useState("")
+    const [timer, setTimer] = useState(0)
+    const [timeCounting, setTimeCounting] = useState(null)
+
+    const timeCounter = () => {
+        return setInterval(()=>{
+            setTimer(timer => timer+1)
+        }, 1000)
+    }
 
     const freshBoard = () => {
         setNotify("")
         const newBoard = EmptyBoard(props.height, props.width)
         setMineCount(props.mines)
         setNonMineCount(props.height * props.width - props.mines)
+        setTimer(0)
+        setTimeCounting(null)
         setGrid(newBoard.board)
-        setEngame(false)
+        setEndgame(false)
     }
 
     const firstMove = (x, y) => {
@@ -27,9 +37,15 @@ function Board(props) {
         setMineLocation(newBoard.mineLocation)
         let newGrid = JSON.parse(JSON.stringify(newBoard.board));
         let revealedBoard = reveal(newGrid, x, y, nonMineCount);
+        setTimeCounting(timeCounter());
         setGrid(revealedBoard.board);
         setNonMineCount(revealedBoard.nonMineCount)
     }
+
+    useEffect(()=>{
+        console.log(timer)
+        console.log(timeCounting)
+    },[timer, timeCounting])
 
     useEffect(() => {
         freshBoard();
@@ -38,7 +54,7 @@ function Board(props) {
 
     const updateFlag = (e, x, y) => {
         e.preventDefault();
-        if (!isEngame) {
+        if (!isEndgame) {
             let newGrid = JSON.parse(JSON.stringify(grid));
             newGrid[x][y].flagged = !newGrid[x][y].flagged;
             if (newGrid[x][y].flagged) {
@@ -51,7 +67,7 @@ function Board(props) {
     }
 
     const revealCell = (e, x, y) => {
-        if (!isEngame) {
+        if (!isEndgame) {
             if (grid[x][y].flagged) {
                 return;
             }
@@ -62,11 +78,12 @@ function Board(props) {
             let newGrid = JSON.parse(JSON.stringify(grid));
             if (newGrid[x][y].value === -1) {
                 setNotify("You lose!")
-                setEngame(true)
+                setEndgame(true)
                 for (let i = 0; i < mineLocation.length; i++) {
                     newGrid[mineLocation[i][0]][mineLocation[i][1]].revealed = true;
                 }
                 setGrid(newGrid);
+                clearInterval(timeCounting)
                 setTimeout(freshBoard, 5000);
             } else {
                 let revealedBoard = reveal(newGrid, x, y, nonMineCount);
@@ -74,7 +91,8 @@ function Board(props) {
                 setNonMineCount(revealedBoard.nonMineCount);
                 if (revealedBoard.nonMineCount === 0) {
                     setNotify("You win!")
-                    setEngame(true)
+                    setEndgame(true)
+                    clearInterval(timeCounting)
                     setTimeout(freshBoard, 5000);
                 }
             }
@@ -83,7 +101,7 @@ function Board(props) {
 
     return (
         <div>
-            {notify ? <h3>{notify}</h3> : <h3>💣: {mineCount}</h3>}
+            {notify ? <h3>{notify}</h3> : <h3>💣: {mineCount}</h3>}  {timer}
             <div>
                 {grid.map((row, index1) => {
                     return (
