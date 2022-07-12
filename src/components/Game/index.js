@@ -28,19 +28,25 @@ function Game() {
         <div>
             <Header activeLink={"game"}></Header>
             <div>
-                <h1>Minesweeper {level}</h1>
-                <div className="select">
-                    <select value={level} onChange={(e)=>{console.log(level==="easy");setLevel(()=>e.target.value)}}>
-                        <option value={"easy"}>Easy</option>
-                        <option value={"normal"}>Normal</option>
-                        <option value={"hard"}>Hard</option>
-                    </select>
+                <div className="block has-text-centered">
+                    <h1 className="title is-2 ">Minesweeper</h1>
+                    <div className="block">
+                        <div className="m-auto">Level: </div>
+                        <div className="select">
+                            <select value={level} onChange={(e) => { console.log(level === "easy"); setLevel(() => e.target.value) }}>
+                                <option value={"easy"}>Easy</option>
+                                <option value={"normal"}>Normal</option>
+                                <option value={"hard"}>Hard</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
                 <div className="board">
                     {level === "easy" && <Board level="easy" height={easy.height} width={easy.width} mines={easy.mines} />}
                     {level === "normal" && <Board level="normal" height={normal.height} width={normal.width} mines={normal.mines} />}
                     {level === "hard" && <Board level="hard" height={hard.height} width={hard.width} mines={hard.mines} />}
-                    
+
                 </div>
             </div>
         </div>

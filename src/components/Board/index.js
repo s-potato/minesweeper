@@ -146,8 +146,12 @@ function Board(props) {
     }
 
     return (
-        <div>
-            {notify ? <h3>{notify}</h3> : <h3>💣: {mineCount}</h3>}  {timer}
+        <div className="box has-text-centered">
+            {notify && <h3>{notify}</h3>}
+            <div className="is-flex is-justify-content-space-around">
+                <div>💣: {mineCount}</div>
+                <div>⏱: {timer}s</div>
+            </div>
             <div>
                 {grid.map((row, index1) => {
                     return (

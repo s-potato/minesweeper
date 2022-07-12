@@ -43,15 +43,15 @@ function Admin() {
             let hardWinrate = 0
             if (values[0] && values[0].totalGames > 0) {
                 easyGame = values[0].totalGames
-                easyWinrate = 100 * values[0].totalWin / values[0].totalGames
+                easyWinrate = Math.round(10000 * values[0].totalWin / values[0].totalGames) / 100
             }
             if (values[1] && values[1].totalGames > 0) {
                 normalGame = values[0].totalGames
-                normalWinrate = 100 * values[1].totalWin / values[1].totalGames
+                normalWinrate = Math.round(10000 * values[1].totalWin / values[1].totalGames) / 100
             }
             if (values[2] && values[2].totalGames > 0) {
                 hardGame = values[0].totalGames
-                hardWinrate = 100 * values[2].totalWin / values[2].totalGames
+                hardWinrate = Math.round(10000 * values[2].totalWin / values[2].totalGames) / 100
             }
             setModalUser({
                 ...user,
@@ -83,9 +83,9 @@ function Admin() {
                 <div className="modal-content">
                     <div className="box">
                         <div>{modalUser.username} {modalUser.isAdmin ? "Admin" : "User"} {modalUser.isBlocked ? "Blocked" : "Active"}</div>
-                        <div>Easy: {modalUser.easyGame} games, winrate: {modalUser.easyWinrate.toFixed(2)}%</div>
-                        <div>Normal: {modalUser.normalGame} games, winrate: {modalUser.normalWinrate.toFixed(2)}%</div>
-                        <div>Hard: {modalUser.hardGame} games, winrate: {modalUser.hardWinrate.toFixed(2)}%</div>
+                        <div>Easy: {modalUser.easyGame} games, winrate: {modalUser.easyWinrate}%</div>
+                        <div>Normal: {modalUser.normalGame} games, winrate: {modalUser.normalWinrate}%</div>
+                        <div>Hard: {modalUser.hardGame} games, winrate: {modalUser.hardWinrate}%</div>
                     </div>
                 </div>
             </div>
