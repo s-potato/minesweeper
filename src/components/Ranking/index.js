@@ -16,21 +16,46 @@ function Ranking() {
     return (
         <div>
             <Header activeLink={"ranking"}></Header>
-            <div>
-                <div className="panel-tabs">
-                    <a href="true"
-                        className={level === "easy" ? "is-active" : ""}
-                        onClick={(e) => { e.preventDefault(); setLevel('easy') }}>Easy</a>
-                    <a href="true"
-                        className={level === "normal" ? "is-active" : ""}
-                        onClick={(e) => { e.preventDefault(); setLevel('normal') }}>Normal</a>
-                    <a href="true"
-                        className={level === "hard" ? "is-active" : ""}
-                        onClick={(e) => { e.preventDefault(); setLevel('hard') }}>Hard</a>
+
+            <div className="block has-text-centered">
+                <h1 className="title is-2">Ranking</h1>
+            </div>
+            <div className="columns is-centered">
+                <div className="column box is-5">
+                    <div className="panel-tabs is-centered is-justify-content-center">
+                        <a href="true"
+                            className={level === "easy" ? "is-active" : ""}
+                            onClick={(e) => { e.preventDefault(); setLevel('easy') }}>Easy</a>
+                        <a href="true"
+                            className={level === "normal" ? "is-active" : ""}
+                            onClick={(e) => { e.preventDefault(); setLevel('normal') }}>Normal</a>
+                        <a href="true"
+                            className={level === "hard" ? "is-active" : ""}
+                            onClick={(e) => { e.preventDefault(); setLevel('hard') }}>Hard</a>
+                    </div>
+                    <div className="is-flex is-justify-content-center">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>No. </th>
+                                    <th>Name</th>
+                                    <th>Win(s)</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {rank.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1} </td>
+                                        <td>{item.name} </td>
+                                        <td>{item.totalTime}  </td>
+                                        <td>{item.totalTime} </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                {rank.map((item, index) => (
-                    <div key={item.uid}>{index + 1} {item.name} {item.totalWin} {item.totalTime}</div>
-                ))}
             </div>
         </div>
     )

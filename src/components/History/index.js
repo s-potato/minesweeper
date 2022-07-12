@@ -36,15 +36,17 @@ function History() {
                                 <th>Start time</th>
                             </tr>
                         </thead>
-                        {history.map((item, index) => (
-                            <tr key={index}>
-                                <td>{index + 1} </td>
-                                <td>{item.level} </td>
-                                <td>{item.result}  </td>
-                                <td>{item.time} </td>
-                                <td>{formatDate(item.startTime)} </td>
-                            </tr>
-                        ))}
+                        <tbody>
+                            {history.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1} </td>
+                                    <td>{item.level} </td>
+                                    <td>{item.result}  </td>
+                                    <td>{item.time} </td>
+                                    <td>{formatDate(item.startTime)} </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                 </div>
             </div>
