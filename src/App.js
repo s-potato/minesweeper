@@ -6,6 +6,7 @@ import Game from './components/Game';
 import History from './components/History';
 import Statistic from './components/Statistic';
 import Ranking from './components/Ranking';
+import Admin from './components/Admin';
 
 const PrivateRoute = ({ element }) => {
   let conditional = true
@@ -42,6 +43,7 @@ function App() {
           <Route path='/history' element={<PrivateRoute element={<History />} />} />
           <Route path='/statistic' element={<PrivateRoute element={<Statistic />} />} />
           <Route path='/ranking' element={<PrivateRoute element={<Ranking />} />} />
+          <Route path='/admin' element={<PrivateRoute element={<Admin />} />} />
           <Route path='*' element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

@@ -6,8 +6,10 @@ export const getAuthorizedUser = async () => {
         return {}
     }
     return await getUser(user.id).then(data=>{
-        if (!data || data.password !== user.password) {
+        if (!data || data.password !== user.password || data.isBlocked) {
             localStorage.removeItem("user")
+            if (data.isBlocked)
+                return {isBlocked: true}
             return {}
         } else {
             localStorage.setItem("user", JSON.stringify(data))

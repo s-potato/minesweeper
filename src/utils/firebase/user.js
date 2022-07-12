@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 import { db } from '../../lib/firebase'
 
 export const getUser = async (uid) => {
@@ -13,6 +13,20 @@ export const getUser = async (uid) => {
     } catch (err) {
         console.log(err)
         return undefined
+    }
+}
+
+export const getAllUser = async () => {
+    try {
+        const userRef = collection(db, "user")
+        const userSnap = await getDocs(userRef)
+        return userSnap.docs.map(data => {
+            const {password, ...newData} = data.data()
+            return newData
+        })
+    } catch (err) {
+        console.log(err)
+        return []
     }
 }
 

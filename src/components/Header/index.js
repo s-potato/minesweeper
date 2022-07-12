@@ -46,6 +46,11 @@ function Header({ activeLink }) {
                 <a className={activeLink === "ranking" ? "navbar-item is-active" : "navbar-item"} href="/ranking">
                     Ranking
                 </a>
+                {user && user.isAdmin &&
+                    <a className={activeLink === "admin" ? "navbar-item is-active" : "navbar-item"} href="/admin">
+                        Admin Portal
+                    </a>
+                }
             </div>
 
             <div className="navbar-end">

@@ -32,6 +32,10 @@ function Login() {
 
     const handleLogin = account => {
         getUser(md5(account.username)).then(data => {
+            if (data.isBlocked) {
+                setInvalidUsername("Your account has been blocked.")
+                return
+            }
             if(data) {
                 console.log(data)
                 console.log(md5(account.password))

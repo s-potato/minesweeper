@@ -22,7 +22,7 @@ function History() {
             <Header activeLink={"history"}></Header>
             <div>
                 {history.map((item, index) => (
-                    <div>{index + 1} {item.level} {item.result} {item.time} {item.startTime}</div>
+                    <div key={index}>{index + 1} {item.level} {item.result} {item.time} {item.startTime}</div>
                 ))}
             </div>
         </div>
