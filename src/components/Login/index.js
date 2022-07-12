@@ -51,9 +51,9 @@ function Login() {
             <div className="columns is-centered is-vcentered is-fullheight">
                 <div className="column is-4">
                     <form className="box">
-                        <div className="logo-containter">
-                            <img src='mines2.png' className="logo" alt="Minesweeper" />
-                        </div>
+                        <a href="/" className="logo-containter">
+                            <img src='mines.png' className="logo" alt="Minesweeper" />
+                        </a>
                         <div className="block has-text-centered is-size-3">Login</div>
                         <div className="field">
                             <label className="label" htmlFor="username">Username</label>

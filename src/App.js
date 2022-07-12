@@ -18,7 +18,7 @@ const PrivateRoute = ({ element }) => {
   return conditional === true ? element : <Navigate to="/login" replace />
 }
 
-const HomeRoute = ({ element }) => {
+const PreLoginRoute = ({ element }) => {
   let conditional = true
   let user = JSON.parse(localStorage.getItem('user'))
   if (user && user.id) {
@@ -36,9 +36,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<HomeRoute element={<Login />} />} />
-          <Route path='/signup' element={<HomeRoute element={<Signup />} />} />
-          <Route path='/' element={<PrivateRoute element={<Game />} />} />
+          <Route path='/login' element={<PreLoginRoute element={<Login />} />} />
+          <Route path='/signup' element={<PreLoginRoute element={<Signup />} />} />
+          <Route path='/' element={<Game />}/>
           <Route path='/history' element={<PrivateRoute element={<History />} />} />
           <Route path='/statistic' element={<PrivateRoute element={<Statistic />} />} />
           <Route path='/ranking' element={<PrivateRoute element={<Ranking />} />} />

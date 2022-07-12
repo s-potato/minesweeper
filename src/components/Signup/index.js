@@ -60,9 +60,9 @@ function Signup() {
             <div className="columns is-centered is-vcentered is-fullheight">
                 <div className="column is-4">
                     <form className="box">
-                        <div className="logo-containter">
+                        <a href="/" className="logo-containter">
                             <img src='mines.png' className="logo" alt="Minesweeper" />
-                        </div>
+                        </a>
                         <div className="block has-text-centered is-size-3">Signup</div>
                         <div className="field">
                             <label className="label" htmlFor="username">Username</label>

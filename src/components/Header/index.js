@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import './style.css'
 
 
-function Header({activeLink}) {
+function Header({ activeLink }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const user = JSON.parse(localStorage.getItem("user"))
 
@@ -34,18 +34,32 @@ function Header({activeLink}) {
             </div>
 
             <div className="navbar-end">
-                <div className="navbar-item has-dropdown is-hoverable">
-                    <span className="navbar-link">{user.username}
-                    </span>
-                    <div className="navbar-dropdown is-right">
-                        <a href="/statistic" className="navbar-item">
-                            Statistics
-                        </a>
-                        <a href="/" className="navbar-item" onClick={e => localStorage.removeItem("user")}>
-                            Logout
-                        </a>
+                {user && user.id &&
+                    <div className="navbar-item has-dropdown is-hoverable">
+                        <span className="navbar-link">{user.username}
+                        </span>
+                        <div className="navbar-dropdown is-right">
+                            <a href="/statistic" className="navbar-item">
+                                Statistics
+                            </a>
+                            <a href="/" className="navbar-item" onClick={e => localStorage.removeItem("user")}>
+                                Logout
+                            </a>
+                        </div>
                     </div>
-                </div>
+                }
+                {(!user || !user.id) &&
+                    <div className="navbar-item">
+                    <div className="buttons">
+                      <a href="/login" className="button is-primary">Login
+                      </a>
+                      <a href="/signup" className="button is-light">
+                        Signup
+                      </a>
+                    </div>
+                  </div>
+            
+                }
             </div>
         </nav>
     )

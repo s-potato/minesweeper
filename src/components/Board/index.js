@@ -24,6 +24,9 @@ function Board(props) {
 
     const handleEndGame = (result, timer) => {
         let user = JSON.parse(localStorage.getItem("user"))
+        if (!user || !user.id) {
+            return
+        }
         let game = {
             uid: user.id,
             level: props.level,
