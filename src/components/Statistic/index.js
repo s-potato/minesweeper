@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { PieChart, Pie, Cell, Legend } from 'recharts';
+
 import { getAuthorizedUser } from "../../utils/auth"
 import { getStatistic } from "../../utils/firebase/game"
 import Header from "../Header"
@@ -6,6 +8,10 @@ import Header from "../Header"
 function Statistic() {
     const [level, setLevel] = useState('easy')
     const [stat, setStat] = useState(null)
+    const [chartData, setChartData] = useState([])
+
+    const label = ["Win", "Lose"]
+    const COLORS = ["#0000ff", "#ff0000"]
 
     useEffect(() => {
         getAuthorizedUser().then(user => {
@@ -21,6 +27,15 @@ function Statistic() {
                     ...data,
                     winrate: Math.round(10000 * data.totalWin / data.totalGames) / 100
                 }
+                setChartData([
+                    {
+                        name: "Win",
+                        value: statistic.totalWin
+                    },
+                    {
+                        name: "Lose",
+                        value: statistic.totalGames - statistic.totalWin
+                    }])
                 setStat(statistic)
             })
         })
@@ -49,6 +64,25 @@ function Statistic() {
                         {
                             stat &&
                             <div>
+                                <div className="is-flex is-justify-content-center">
+                                    <PieChart width={250} height={250}>
+                                        <Legend verticalAlign="top" height={36} />
+                                        <Pie
+                                            data={chartData}
+                                            cx="50%"
+                                            cy="50%"
+                                            labelLine={false}
+                                            label={label}
+                                            outerRadius={80}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                        >
+                                            {chartData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                    </PieChart>
+                                </div>
                                 <div>You had played {stat.totalGames} games</div>
                                 <div>Win: {stat.totalWin} games</div>
                                 <div>Lose: {stat.totalGames - stat.totalWin} games</div>
