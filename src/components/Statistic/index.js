@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getAuthorizedUser } from "../../utils/auth"
 import { getStatistic } from "../../utils/firebase/game"
 import Header from "../Header"
 
@@ -7,10 +8,14 @@ function Statistic() {
     const [stat, setStat] = useState(null)
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"))
-        getStatistic(user.id, level).then(data => {
-            console.log(data)
-            setStat(data)
+        getAuthorizedUser().then(user=>{
+            if (!user.id) {
+                return
+            }
+            getStatistic(user.id, level).then(data => {
+                console.log(data)
+                setStat(data)
+            })
         })
     }, [level])
 

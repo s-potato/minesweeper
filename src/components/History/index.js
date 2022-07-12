@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getAuthorizedUser } from "../../utils/auth"
 import { getHistory } from "../../utils/firebase/game"
 import Header from "../Header"
 
@@ -6,10 +7,13 @@ function History() {
     const [history, setHistory] = useState([])
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"))
-        getHistory(user.id).then(data => {
-            console.log(data)
-            setHistory(data)
+        getAuthorizedUser().then(user => {
+            if (!user.id) {
+                return
+            }
+            getHistory(user.id).then(data => {
+                setHistory(data)
+            })
         })
     }, [])
 
@@ -18,7 +22,7 @@ function History() {
             <Header activeLink={"history"}></Header>
             <div>
                 {history.map((item, index) => (
-                    <div>{index+1} {item.level} {item.result} {item.time} {item.startTime}</div>
+                    <div>{index + 1} {item.level} {item.result} {item.time} {item.startTime}</div>
                 ))}
             </div>
         </div>

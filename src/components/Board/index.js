@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getAuthorizedUser } from "../../utils/auth";
 import { CreateBoard, EmptyBoard } from "../../utils/CreateBoard";
 import { addHistory, getStatistic, setStatistic } from "../../utils/firebase/game";
 import reveal from "../../utils/Reveal";
@@ -23,49 +24,48 @@ function Board(props) {
     }
 
     const handleEndGame = (result, timer) => {
-        let user = JSON.parse(localStorage.getItem("user"))
-        if (!user || !user.id) {
-            return
-        }
-        let game = {
-            uid: user.id,
-            level: props.level,
-            result: result,
-            startTime: startTime,
-            time: timer
-        }
-        console.log(game)
-        getStatistic(user.id, props.level).then(data => {
-            if (!data) {
-                let stat = {
-                    uid: user.id,
-                    name: user.username,
-                    level: props.level,
-                    totalGames: 1,
-                    totalWin: result === 'win' ? 1 : 0,
-                    totalTime: result === 'win' ? timer : 0
-                }
-                if (result === 'win') {
-                    stat.bestResult = timer
-                }
-                setStatistic(stat)
-            } else {
-                let stat = data
-                stat.totalGames += 1
-                if (result === 'win') {
-                    stat.totalWin += 1
-                    stat.totalTime += timer
-                    if (!stat.bestResult) {
-                        stat.bestResult = timer
-                    } else if (stat.bestResult > timer) {
+        getAuthorizedUser().then(user=>{
+            if (!user.id) return
+            let game = {
+                uid: user.id,
+                level: props.level,
+                result: result,
+                startTime: startTime,
+                time: timer
+            }
+            console.log(game)
+            getStatistic(user.id, props.level).then(data => {
+                if (!data) {
+                    let stat = {
+                        uid: user.id,
+                        name: user.username,
+                        level: props.level,
+                        totalGames: 1,
+                        totalWin: result === 'win' ? 1 : 0,
+                        totalTime: result === 'win' ? timer : 0
+                    }
+                    if (result === 'win') {
                         stat.bestResult = timer
                     }
+                    setStatistic(stat)
+                } else {
+                    let stat = data
+                    stat.totalGames += 1
+                    if (result === 'win') {
+                        stat.totalWin += 1
+                        stat.totalTime += timer
+                        if (!stat.bestResult) {
+                            stat.bestResult = timer
+                        } else if (stat.bestResult > timer) {
+                            stat.bestResult = timer
+                        }
+                    }
+                    console.log(stat)
+                    setStatistic(stat)
                 }
-                console.log(stat)
-                setStatistic(stat)
-            }
+            })
+            addHistory(game)
         })
-        addHistory(game)
     }
 
     const freshBoard = () => {

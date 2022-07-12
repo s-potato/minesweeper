@@ -1,10 +1,25 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { getAuthorizedUser } from "../../utils/auth"
 import './style.css'
 
 
 function Header({ activeLink }) {
+    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const user = JSON.parse(localStorage.getItem("user"))
+    const [user, setUser] = useState({})
+
+    useEffect(() => {
+        let user = JSON.parse(localStorage.getItem("user"))
+        if (!user || !user.id) navigate("/")
+        setUser(user)
+        getAuthorizedUser().then(data => {
+            if (!data.id) {
+                navigate("/")
+            }
+            setUser(data)
+        })
+    }, [navigate])
 
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -50,15 +65,15 @@ function Header({ activeLink }) {
                 }
                 {(!user || !user.id) &&
                     <div className="navbar-item">
-                    <div className="buttons">
-                      <a href="/login" className="button is-primary">Login
-                      </a>
-                      <a href="/signup" className="button is-light">
-                        Signup
-                      </a>
+                        <div className="buttons">
+                            <a href="/login" className="button is-primary">Login
+                            </a>
+                            <a href="/signup" className="button is-light">
+                                Signup
+                            </a>
+                        </div>
                     </div>
-                  </div>
-            
+
                 }
             </div>
         </nav>
