@@ -41,7 +41,7 @@ function History() {
                                 <tr key={index}>
                                     <td>{index + 1} </td>
                                     <td>{item.level} </td>
-                                    <td>{item.result}  </td>
+                                    <td>{item.result === "win" ? "Win" : "Lose"}  </td>
                                     <td>{item.time} </td>
                                     <td>{formatDate(item.startTime)} </td>
                                 </tr>

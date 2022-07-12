@@ -26,6 +26,9 @@ function Admin() {
         console.log(id)
         let nUsers = users.map(user => user.id === id ? { ...user, isBlocked: !user.isBlocked } : user)
         setUser(nUsers.filter(user => user.id === id)[0])
+        if (id === modalUser.id) {
+            setModalUser({ ...modalUser, isBlocked: !modalUser.isBlocked })
+        }
         setUsers(nUsers)
     }
 
@@ -41,6 +44,9 @@ function Admin() {
             let easyWinrate = 0
             let normalWinrate = 0
             let hardWinrate = 0
+            let easyBestResult = (values[0] && values[0].bestResult) ? values[0].bestResult : ""
+            let normalBestResult = (values[1] && values[1].bestResult) ? values[1].bestResult : ""
+            let hardBestResult = (values[2] && values[2].bestResult) ? values[2].bestResult : ""
             if (values[0] && values[0].totalGames > 0) {
                 easyGame = values[0].totalGames
                 easyWinrate = Math.round(10000 * values[0].totalWin / values[0].totalGames) / 100
@@ -56,7 +62,8 @@ function Admin() {
             setModalUser({
                 ...user,
                 easyGame: easyGame, normalGame: normalGame, hardGame: hardGame,
-                easyWinrate: easyWinrate, normalWinrate: normalWinrate, hardWinrate: hardWinrate
+                easyWinrate: easyWinrate, normalWinrate: normalWinrate, hardWinrate: hardWinrate,
+                easyBestResult: easyBestResult, normalBestResult: normalBestResult, hardBestResult: hardBestResult,
             })
             setIsModal(true)
         })
@@ -66,26 +73,103 @@ function Admin() {
         setFilter(e.target.value)
     }
 
+    const handleClear = () => {
+        const search = document.getElementById('search')
+        search.value = ""
+        setFilter("")
+    }
+
     return (
         <div>
             <Header activeLink={"admin"}></Header>
-            <input class="input" type="text" placeholder="Text input" onChange={e => handleFilter(e)}></input>
-            {users.filter(user => user.username.includes(filter)).map((item, index) => (
-                <div key={index}>
-                    <div key={index}>{item.username} {item.isAdmin ? "Admin" : "User"} {item.isBlocked ? "Blocked" : "Active"}
-                    </div>
-                    <button onClick={e => handleDetail(item)}>Detail</button>
-                    {!item.isAdmin && (item.isBlocked ? <button onClick={(e) => handleBlock(item.id)}>Unblock</button> : <button onClick={(e) => handleBlock(item.id)}>Block</button>)}
-                </div>
-            ))}
             <div className={isModal ? "modal is-active" : "modal"}>
                 <div className="modal-background" onClick={e => setIsModal(false)}></div>
                 <div className="modal-content">
-                    <div className="box">
-                        <div>{modalUser.username} {modalUser.isAdmin ? "Admin" : "User"} {modalUser.isBlocked ? "Blocked" : "Active"}</div>
-                        <div>Easy: {modalUser.easyGame} games, winrate: {modalUser.easyWinrate}%</div>
-                        <div>Normal: {modalUser.normalGame} games, winrate: {modalUser.normalWinrate}%</div>
-                        <div>Hard: {modalUser.hardGame} games, winrate: {modalUser.hardWinrate}%</div>
+                    <div className="box has-text-centered">
+                        <h1 className="title is-2 ">{modalUser.username}</h1>
+                        <div><b>Role: </b>{modalUser.isAdmin ? "Admin" : "User"}</div>
+                        <div><b>Status: </b>{modalUser.isBlocked ? "Blocked" : "Active"}</div>
+                        <br></br>
+                        <div className="is-flex is-justify-content-center">
+                            <table className="table ">
+                                <thead>
+                                    <tr>
+                                        <th>Level</th>
+                                        <th>TotalGames</th>
+                                        <th>WinRate</th>
+                                        <th>Best result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Easy</td>
+                                        <td>{modalUser.easyGame}</td>
+                                        <td>{modalUser.easyWinrate}%</td>
+                                        <td>{modalUser.easyBestResult}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Normal</td>
+                                        <td>{modalUser.normalGame}</td>
+                                        <td>{modalUser.normalWinrate}%</td>
+                                        <td>{modalUser.normalBestResult}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hard</td>
+                                        <td>{modalUser.hardGame}</td>
+                                        <td>{modalUser.hardWinrate}%</td>
+                                        <td>{modalUser.hardBestResult}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {!modalUser.isAdmin && (modalUser.isBlocked ? <button className="button is-primary" onClick={(e) => handleBlock(modalUser.id)}>Unblock</button> : <button className="button is-danger" onClick={(e) => handleBlock(modalUser.id)}>Block</button>)}
+                    </div>
+                </div>
+            </div>
+            <div className="block has-text-centered">
+                <h1 className="title is-2 ">Admin Portal</h1>
+            </div>
+            <div className="columns is-centered">
+                <div className="column box is-5">
+                    <div className="field has-addons">
+                        <div className="control has-icons-left is-expanded">
+                            <input className="input" type="text" id="search" placeholder="Search..." onChange={e => handleFilter(e)}></input>
+                            <span className="icon is-small is-left">
+                                <i className="fa fa-search"></i>
+                            </span>
+                        </div>
+                        <div class="control">
+                            <button class="button" onClick={handleClear}>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div className="is-flex is-justify-content-center">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>No. </th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.filter(user => user.username.includes(filter)).map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.username}</td>
+                                        <td>{item.isAdmin ? "Admin" : "User"}</td>
+                                        <td>{item.isBlocked ? "Blocked" : "Active"}</td>
+                                        <td>
+                                            <button className="button is-small" onClick={e => handleDetail(item)}>Detail</button>
+                                            {!item.isAdmin && (item.isBlocked ? <button className="button is-small is-primary" onClick={(e) => handleBlock(item.id)}>Unblock</button> : <button className="button is-small is-danger" onClick={(e) => handleBlock(item.id)}>Block</button>)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

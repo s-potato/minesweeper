@@ -13,8 +13,15 @@ function Statistic() {
                 return
             }
             getStatistic(user.id, level).then(data => {
-                console.log(data)
-                setStat(data)
+                if (!data || !data.totalGames) {
+                    setStat(null)
+                    return
+                }
+                let statistic = {
+                    ...data,
+                    winrate: Math.round(10000 * data.totalWin / data.totalGames) / 100
+                }
+                setStat(statistic)
             })
         })
     }, [level])
@@ -38,11 +45,18 @@ function Statistic() {
                             className={level === "hard" ? "is-active" : ""}
                             onClick={(e) => { e.preventDefault(); setLevel('hard') }}>Hard</a>
                     </div>
-                    <div className="is-flex is-justify-content-center">
+                    <div className="has-text-centered">
                         {
-                            stat && stat.totalGames &&
-                            <div>Winrate: {100 * stat.totalWin / stat.totalGames}%</div>
+                            stat &&
+                            <div>
+                                <div>You had played {stat.totalGames} games</div>
+                                <div>Win: {stat.totalWin} games</div>
+                                <div>Lose: {stat.totalGames - stat.totalWin} games</div>
+                                <div>Winrate: {stat.winrate}%</div>
+                                {stat.bestResult && <div>Best result: {stat.bestResult}s</div>}
+                            </div>
                         }
+                        <div>{!stat && "You haven't played this level yet."}</div>
                     </div>
                 </div>
             </div>
