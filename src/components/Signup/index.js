@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import md5 from "md5";
 import "./style.css"
-import { getUser, setUser } from "../../utils/firebase/user";
+import { getUser, setUser, googleLogin } from "../../utils/firebase/user";
 
 function Signup() {
     const navigate = useNavigate();
@@ -51,6 +51,18 @@ function Signup() {
                 navigate('/')
             } else {
                 setInvalidUsername("This username has been used")
+            }
+        })
+    }
+
+    const handleGoogleLogin = e => {
+        e.preventDefault()
+        googleLogin().then(data => {
+            console.log(data)
+            if (data) {
+                localStorage.setItem('user', JSON.stringify(data))
+                navigate('/')
+                return
             }
         })
     }
@@ -107,7 +119,7 @@ function Signup() {
                             <div className="column">
                                 <p className="has-text-centered">Login with Google</p>
                                 <div className="has-text-centered">
-                                    <button className="button is-normal">
+                                    <button className="button is-normal" onClick={handleGoogleLogin}>
                                         <span className="icon">
                                             <img width="40px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
                                         </span>

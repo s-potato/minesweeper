@@ -1,7 +1,7 @@
 import md5 from "md5";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../../utils/firebase/user";
+import { getUser, googleLogin } from "../../utils/firebase/user";
 import "./style.css"
 
 function Login() {
@@ -23,10 +23,10 @@ function Login() {
             errorFlag = true
         }
 
-        if(!errorFlag){
+        if (!errorFlag) {
             setInvalidUsername(undefined)
             setInvalidPassword(undefined)
-            handleLogin({...account})
+            handleLogin({ ...account })
         }
     }
 
@@ -36,7 +36,7 @@ function Login() {
                 setInvalidUsername("Your account has been blocked.")
                 return
             }
-            if(data) {
+            if (data) {
                 console.log(data)
                 console.log(md5(account.password))
                 if (data.password === md5(account.password)) {
@@ -47,6 +47,18 @@ function Login() {
             }
             setInvalidUsername("The username or password is incorrect.")
             setInvalidPassword("The username or password is incorrect.")
+        })
+    }
+
+    const handleGoogleLogin = e => {
+        e.preventDefault()
+        googleLogin().then(data => {
+            console.log(data)
+            if (data) {
+                localStorage.setItem('user', JSON.stringify(data))
+                navigate('/')
+                return
+            }
         })
     }
 
@@ -91,7 +103,7 @@ function Login() {
 
                                 <p className="has-text-centered">Login with Google</p>
                                 <div className="has-text-centered">
-                                    <button className="button is-normal">
+                                    <button className="button is-normal" onClick={handleGoogleLogin}>
                                         <span className="icon">
                                             <img width="40px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
                                         </span>
@@ -101,7 +113,7 @@ function Login() {
                             <div className="column">
                                 <p className="has-text-centered">Need an account?</p>
                                 <div className="has-text-centered">
-                                    <button className="button is-normal" onClick={e=>{e.preventDefault(); navigate('/signup')}}>
+                                    <button className="button is-normal" onClick={e => { e.preventDefault(); navigate('/signup') }}>
                                         Signup
                                     </button>
                                 </div>

@@ -1,5 +1,33 @@
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
-import { db } from '../../lib/firebase'
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import md5 from "md5"
+
+import { db, auth } from '../../lib/firebase'
+
+export const googleLogin = async () => {
+    const provider = new GoogleAuthProvider()
+    return await signInWithPopup(auth, provider).then((result) => {
+        // The signed-in user info.
+        const guser = result.user;
+        let user = {
+            id: md5(guser.uid),
+            username: guser.displayName,
+            email: guser.email,
+            isGoogleAccount: true
+        }
+        return getUser(user.id).then((result)=>{
+            if (result){
+                return result
+            } else {
+                setUser(user)
+                return user
+            }
+        })
+    }).catch((error) => {
+        console.log(error)
+        return undefined
+    });
+}
 
 export const getUser = async (uid) => {
     try {
@@ -21,7 +49,7 @@ export const getAllUser = async () => {
         const userRef = collection(db, "user")
         const userSnap = await getDocs(userRef)
         return userSnap.docs.map(data => {
-            const {password, ...newData} = data.data()
+            const { password, ...newData } = data.data()
             return newData
         })
     } catch (err) {

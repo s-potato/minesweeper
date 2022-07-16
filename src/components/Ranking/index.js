@@ -48,7 +48,7 @@ function Ranking() {
                                     <tr key={index}>
                                         <td>{index + 1} </td>
                                         <td>{item.name} </td>
-                                        <td>{item.totalTime}  </td>
+                                        <td>{item.totalWin}  </td>
                                         <td>{item.totalTime} </td>
                                     </tr>
                                 ))}
