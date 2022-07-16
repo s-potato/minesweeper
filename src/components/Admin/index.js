@@ -129,7 +129,10 @@ function Admin() {
                                 </tbody>
                             </table>
                         </div>
-                        {!modalUser.isAdmin && (modalUser.isBlocked ? <button className="button is-primary" onClick={(e) => handleBlock(modalUser.id)}>Unblock</button> : <button className="button is-danger" onClick={(e) => handleBlock(modalUser.id)}>Block</button>)}
+                        <div>
+                            {!modalUser.isAdmin && (modalUser.isBlocked ? <button className="button is-primary mx-2" onClick={(e) => handleBlock(modalUser.id)}>Unblock</button> : <button className="button is-danger mx-2" onClick={(e) => handleBlock(modalUser.id)}>Block</button>)}
+                            <button className="button mx-2" onClick={e => setIsModal(false)}>Back</button>
+                        </div>
                     </div>
                 </div>
             </div>

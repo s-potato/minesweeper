@@ -50,7 +50,7 @@ function Signup() {
                 localStorage.setItem('user', JSON.stringify(user))
                 navigate('/')
             } else {
-                setInvalidUsername("This username has been used")
+                setInvalidUsername("This username has been used.")
             }
         })
     }
