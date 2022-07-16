@@ -5,6 +5,10 @@
   height: 100vh;
 }
 
+.title.is-2 {
+  margin-top: 0.75em;
+}
+
 html {
   background-color: #61dafb;
   background-position: center;

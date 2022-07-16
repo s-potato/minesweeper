@@ -29,7 +29,7 @@ function Game() {
             <Header activeLink={"game"}></Header>
             <div>
                 <div className="block has-text-centered">
-                    <h1 className="title is-2 ">Minesweeper</h1>
+                    <h1 className="title is-2">Minesweeper</h1>
                     <div className="block">
                         <div className="m-auto">Level: </div>
                         <div className="select">

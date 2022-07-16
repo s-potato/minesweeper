@@ -22,7 +22,7 @@ function Header({ activeLink }) {
     }, [navigate])
 
     return (
-        <nav className="navbar" role="navigation" aria-label="main navigation">
+        <nav className="navbar has-shadow" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
                 <a className="navbar-item" href="/">
                     <img src="mines.png" alt="Minesweeper" width="30" height="30" />

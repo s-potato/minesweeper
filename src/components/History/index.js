@@ -22,7 +22,7 @@ function History() {
         <div>
             <Header activeLink={"history"}></Header>
             <div className="block has-text-centered">
-                <h1 className="title is-2 ">History</h1>
+                <h1 className="title is-2">History</h1>
             </div>
             <div className="columns is-centered">
                 <div className="column is-5 is-flex is-justify-content-center">

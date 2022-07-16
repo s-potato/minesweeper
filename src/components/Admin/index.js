@@ -86,7 +86,7 @@ function Admin() {
                 <div className="modal-background" onClick={e => setIsModal(false)}></div>
                 <div className="modal-content">
                     <div className="box has-text-centered">
-                        <h1 className="title is-2 ">{modalUser.username}</h1>
+                        <h1 className="title is-3">{modalUser.username}</h1>
                         {modalUser.isGoogleAccount &&
                             <>
                                 <b><i class="fa-brands fa-google"></i>oogle Account</b>
@@ -137,7 +137,7 @@ function Admin() {
                 </div>
             </div>
             <div className="block has-text-centered">
-                <h1 className="title is-2 ">Admin Portal</h1>
+                <h1 className="title is-2">Admin Portal</h1>
             </div>
             <div className="columns is-centered">
                 <div className="column box is-5">
