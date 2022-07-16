@@ -87,6 +87,13 @@ function Admin() {
                 <div className="modal-content">
                     <div className="box has-text-centered">
                         <h1 className="title is-2 ">{modalUser.username}</h1>
+                        {modalUser.isGoogleAccount &&
+                            <>
+                                <b><i class="fa-brands fa-google"></i>oogle Account</b>
+                                <div><b>Email: </b>{modalUser.email}</div>
+                                <br></br>
+                            </>
+                        }
                         <div><b>Role: </b>{modalUser.isAdmin ? "Admin" : "User"}</div>
                         <div><b>Status: </b>{modalUser.isBlocked ? "Blocked" : "Active"}</div>
                         <br></br>
