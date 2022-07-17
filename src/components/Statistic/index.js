@@ -68,6 +68,8 @@ function Statistic() {
                                     <PieChart width={250} height={250}>
                                         <Legend verticalAlign="top" height={36} />
                                         <Pie
+                                            startAngle={90}
+                                            endAngle={-270}
                                             data={chartData}
                                             cx="50%"
                                             cy="50%"

@@ -16,6 +16,7 @@ function Board(props) {
     const [startTime, setStartTime] = useState(null)
     const [timer, setTimer] = useState(0)
     const [timeCounting, setTimeCounting] = useState(null)
+    const [isModal, setIsModal] = useState(false)
 
     const timeCounter = () => {
         return setInterval(() => {
@@ -147,8 +148,30 @@ function Board(props) {
 
     return (
         <div className="box has-text-centered">
+            <div className={isModal ? "modal is-active" : "modal"}>
+                <div className="modal-background" onClick={e => setIsModal(false)}></div>
+                <div className="modal-content">
+                    <div className="box has-text-centered">
+                        <h1 className="title is-3">How to play</h1>
+                        <div>
+                            <div>There is a board of m x n cells with x mines.</div>
+                            <br></br>
+                            <div>You can reveal a cell by left click on it. But if you click on a mine, you lose.</div>
+                            <div>The numbers on a cell represent how many mines are adjacent to it.</div>
+                            <div>You can right click a cell to place a flag where you think a mine is.</div>
+                            <div>💣 is the number of flagged mines. ⏱ is time you have spent on this game.</div>
+                            <br></br>
+                            <div>The three difficulty levels are Easy (9x9 with 10 mines), Normal (16x16 with 40 mines) and Hard (30x16 with 99 mines).</div>
+                            <br></br>
+                            <div>To win this game, you need to reveal all non-mines cell.</div>
+                        </div>
+                        <button className="button mx-2" onClick={e => setIsModal(false)}>Back</button>
+                    </div>
+                </div>
+            </div>
             {notify && <h3>{notify}</h3>}
             <div className="is-flex is-justify-content-space-around">
+                <a href="/" onClick={e=>{e.preventDefault(); setIsModal(true)}}>How to play?</a>
                 <div>💣: {mineCount}</div>
                 <div>⏱: {timer}s</div>
             </div>

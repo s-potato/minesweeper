@@ -40,7 +40,6 @@ function Game() {
                             </select>
                         </div>
                     </div>
-
                 </div>
                 <div className="board">
                     {level === "easy" && <Board level="easy" height={easy.height} width={easy.width} mines={easy.mines} />}
